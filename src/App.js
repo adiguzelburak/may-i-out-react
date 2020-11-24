@@ -10,42 +10,49 @@ const App = (props) => {
   const [showNo, setShowNo] = useState(false);
   const [checkedNo, setCheckedNo] = useState(false);
   const [checkedYes, setCheckedYes] = useState(false);
+  const hour = new Date().getHours();
+  const day = new Date().getDay();
+  console.log(hour);
+  console.log(day);
   useEffect(() => {
     setShowHome(true);
   }, []);
   function check() {
     setShowHome(false);
-    if (age >= 65 && checkedNo === true) {
+    // 65 yaş ve üstü normal zamanlar ve hafta sonu 
+    if (age >= 65 && hour > 10 && hour < 20 && checkedNo === true) {  
       setShowNo(true);
     }
-    if (age >= 65 && checkedYes === true) {
+    if (age >= 65 && hour > 10 && hour < 20 && checkedYes === true) {
       setShowYes(true);
     }
-    // if (age < 65 && checkedNo === true) {
-    //   setShowYes(true);
-    // }
-    // if (age < 65 && checkedYes === true) {
-    //   setShowYes(true);
-    // }
-    if (age > 20 && age < 65 && checkedNo === true) {
-      setShowYes(true);
+    // 20 yaş ve altı normal zamanlar ve hafta sonu
+    if (age < 20 && hour > 10 && hour < 20 && checkedNo === true) {
+      setShowNo(true);
     }
+    if (age < 20 && hour > 10 && hour < 20 && checkedYes === true) {
+      setShowNo(true);
+    }
+    // haftasonu aktif kesim
+    if (age > 20 && age < 65 && hour < 10 && hour >= 20 && day === 7 && checkedNo === true) { // PAZAR
+      setShowNo(true);
+    }
+    if (age > 20 && age < 65 && hour < 10 && hour >= 20 && day === 6 && checkedYes === true) { // CUMARTESİ
+      setShowNo(true);
+    }
+    // normal zamanlar aktif kesim
     if (age > 20 && age < 65 && checkedYes === true) {
       setShowYes(true);
     }
-    if (age < 20 && checkedNo === true) {
-      setShowNo(true);
+    if (age > 20 && age < 65 && checkedNo === true) {
+      setShowYes(true);
     }
-    if (age < 20 && checkedYes === true) {
-      setShowNo(true);
-    }
+    
     if (age === "") {
       alert("alanı boş bırakmayınız.");
       window.location.reload();
     }
   }
-
-  console.log(checkedNo);
   return (
     <div className="App">
       {showHome && (
